@@ -51,22 +51,6 @@ export default function App() {
       .catch(error => console.log(error));
   }, [requestPicture, page]);
 
-  // componentDidUpdate(prevState, prevProps) {
-  //   const prevSearch = prevProps.requestPicture;
-  //   const nextSearch = this.state.requestPicture;
-  //   const prevPage = prevProps.page;
-  //   const nextPage = this.state.page;
-
-  //   if (prevSearch !== nextSearch) {
-  //     this.loadPicture();
-  //     this.resetData();
-  //   }
-
-  //   if (nextPage > prevPage) {
-  //     this.loadPicture();
-  //   }
-  // }
-
   const handleFormSubmit = requestPicture => {
     setPage(1);
     setRequestPicture(requestPicture);
