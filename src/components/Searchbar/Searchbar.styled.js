@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const SearchbarHeader = styled.header`
   top: 0;
@@ -64,6 +64,7 @@ export const SearchFormInput = styled.input`
   width: 100%;
   font: inherit;
   font-size: 20px;
+  line-height: normal;
   border: none;
   outline: none;
   padding-left: 4px;
