@@ -9,12 +9,12 @@ import toast from 'react-hot-toast';
 import api from 'services/picture-api';
 
 export default function App() {
-  const [requestPicture, setRequestPicture] = useState('');
+  const [{ requestPicture }, setRequestPicture] = useState('');
   const [pictureData, setPictureData] = useState('');
   const [largeImage, setLargeImage] = useState('');
-  const [status, setStatus] = useState('idle');
+  const [status, setStatus] = useState('');
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState('');
 
   useEffect(() => {
     if (!requestPicture) {
@@ -35,17 +35,25 @@ export default function App() {
         );
 
         setPictureData(prevState => [...prevState, ...data]);
-
         setStatus('resolved');
 
-        const dataLength = res.data.hits.length;
+        const lengthData = (page - 1) * 12 + res.data.hits.length;
 
-        setIsLoadingMore(prevState =>
-          prevState.length + dataLength === res.data.totalHits ? false : true
-        );
+        if (lengthData >= res.data.totalHits) {
+          setIsLoadingMore(false);
+        } else {
+          setIsLoadingMore(true);
+        }
 
-        if (dataLength === 0) {
+        // setIsLoadingMore(prevState =>
+        //   prevState.length + lengthData === res.data.totalHits ? false : true
+        // );
+
+        if (res.data.hits.length === 0) {
           toast.error('There is no picture for that name');
+          setStatus(null);
+          setIsLoadingMore(false);
+          return;
         }
       })
       .catch(error => console.log(error));
@@ -53,13 +61,13 @@ export default function App() {
 
   const handleFormSubmit = requestPicture => {
     setPage(1);
-    setRequestPicture(requestPicture);
+    setRequestPicture({requestPicture});
     setPictureData('');
     setIsLoadingMore(false);
   };
 
   const loadMore = () => {
-    setPage(prevState => prevState.page + 1);
+    setPage(prevState => prevState + 1);
   };
 
   const pictureModalClick = picture => {
@@ -91,5 +99,3 @@ export default function App() {
     </div>
   );
 }
-
-
